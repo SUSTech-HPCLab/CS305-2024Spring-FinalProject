@@ -24,11 +24,13 @@ A comprehensive report documenting the implementation process, insights, and imp
 The organization of the packet header can play a crucial role in facilitating reliable transmission. Based on the diagram provided, the packet header can be structured as follows.    
 You should construct your RDT header as the template RDTHeader class, and it should contain at least the following data fields:
 
-|SYN|FIN|ACK|SEQ|SEQACK|LEN|AWND|CHECKSUM|PAYLOAD|test_case|Source address|Target address
+|test_case|Source_address|Target_address|SYN|FIN|ACK|SEQ|SEQACK|LEN|AWND|CHECKSUM|PAYLOAD|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|1 bytes|tuple(ip: str, port: int)|tuple(ip: str, port: int)
+|1 bytes|6 bytes|6 bytes|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
 
-We provided the template code of RDTSocket in *RDT.py* and template code of RDT packet Header in *Header.py* 
+We provided the template code of RDTSocket in *RDT.py* and template code of RDT packet Header in *Header.py*. Based on our Header.py file, you could also add some other attributes if necessary.
+
+*Please note that during data transmission, all above data should be encoded to corresponding lenght bytes and added together. You are not supposed to use the first **3** fields (test_case, Source_address, Target_address) to calculate the CHECKSUM. Source_address and Target_address should be formatted by stream.*
 
 ### 1.2 Reliable Data Transfer
 For a reliable connection, the following steps are to be executed consecutively:
