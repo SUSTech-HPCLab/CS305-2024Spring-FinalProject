@@ -1,6 +1,6 @@
 # CS305-2024Spring-FinalProject: Reliable Data Transfer using UDP
 
-This project focuses on the development of a reliable data transfer (RDT) protocol using UDP as the underlying protocol. The primary objective is to design and implement a protocol that can address the challenges and limitations of TCP in an unstable network environment. By leveraging UDP and exploring various mechanisms for reliable transmission, the project aims to create a robust and efficient communication protocol. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication. Through this project, we seek to enhance the existing methods of data transfer and contribute to the field of reliable communication protocols.
+This project focuses on the development of a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. The primary objective is to design and implement a protocol that can address the challenges and limitations of TCP in an unstable network environment. By leveraging UDP and exploring various mechanisms for reliable transmission, the project aims to create a robust and efficient communication protocol. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication. Through this project, we seek to enhance the existing methods of data transfer and contribute to the field of reliable communication protocols.
 
 A comprehensive report documenting the implementation process, insights, and improvements made is expected. Additional research beyond the provided instructions is encouraged to contribute to the project's success.
 
@@ -28,7 +28,7 @@ You should construct your RDT header as the template RDTHeader class, and it sho
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
 
-We provided the template code of RDTSocket in *RDT.py* and template code of RDT message Header in *Header.py* 
+We provided the template code of RDTSocket in *RDT.py* and template code of RDT packet Header in *Header.py* 
 
 ### 1.2 Reliable Data Transfer
 For a stable connection, the following steps are to be executed consecutively:
@@ -52,7 +52,7 @@ The total score is 100 points, plus a bonus of 20 points.
 
 **How to test your RDTSocket?**
 
-You can test it through our deployed relay server. Therefore, you need to include a test_case field in your data header with values ranging from 0 to 10 (tentative) (no need to calculate it into the CHECKSUM). When test_case is 0, it represents a normal network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the data header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
+You can test it through our deployed relay server. Therefore, you need to include a test_case field in your packet header with values ranging from 0 to 10 (tentative) (no need to calculate it into the CHECKSUM). When test_case is 0, it represents a normal network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
 The IP address and test port of the testing server will be released later.
 
 ## 2.1 Grading
@@ -80,7 +80,7 @@ You will need to create a video of about 5-8 minutes containing the contents des
 - Data sent during testing will be similar to a long test.
 - Provided code:
 
-    1. *Header.py*: provides the data structure of the RDT protocol header.
+    1. *Header.py*: provides the data structure of the RDT packet header.
     2. *RDT.py*: provides the template and necessary interface of your RDT Socket.
 
 - Suggested steps:
