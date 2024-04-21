@@ -28,6 +28,8 @@ You should construct your RDT header as the template RDTHeader class, and it sho
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
 
+We provided the template code of RDTSocket in *RDT.py* and template code of RDT message Header in *Header.py* 
+
 ### 1.2 Reliable Data Transfer
 For a stable connection, the following steps are to be executed consecutively:
 
