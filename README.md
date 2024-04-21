@@ -1,6 +1,6 @@
 # CS305-2024Spring-FinalProject: Reliable Data Transfer using UDP
 
-This project focuses on the development of a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. The primary objective is to design and implement a protocol that can address the challenges and limitations of TCP in an unstable network environment. By leveraging UDP and exploring various mechanisms for reliable transmission, the project aims to create a robust and efficient communication protocol. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication. Through this project, we seek to enhance the existing methods of data transfer and contribute to the field of reliable communication protocols.
+This project focuses on the development of a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. The primary objective is to design and implement a protocol that can address the challenges and limitations of RDT in an unstable network environment. By leveraging UDP and exploring various mechanisms for reliable transmission, the project aims to create a robust and efficient communication protocol. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication. Through this project, we seek to enhance the existing methods of data transfer and contribute to the field of reliable communication protocols.
 
 A comprehensive report documenting the implementation process, insights, and improvements made is expected. Additional research beyond the provided instructions is encouraged to contribute to the project's success.
 
@@ -24,9 +24,9 @@ A comprehensive report documenting the implementation process, insights, and imp
 The organization of the packet header can play a crucial role in facilitating reliable transmission. Based on the diagram provided, the packet header can be structured as follows.    
 You should construct your RDT header as the template RDTHeader class, and it should contain at least the following data fields:
 
-|SYN|FIN|ACK|SEQ|SEQACK|LEN|AWND|CHECKSUM|PAYLOAD|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
+|SYN|FIN|ACK|SEQ|SEQACK|LEN|AWND|CHECKSUM|PAYLOAD|test_case|Source address|Target address
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|1 bytes|tuple(ip: str, port: int)|tuple(ip: str, port: int)
 
 We provided the template code of RDTSocket in *RDT.py* and template code of RDT packet Header in *Header.py* 
 
@@ -36,7 +36,7 @@ For a stable connection, the following steps are to be executed consecutively:
 1. Accept and establish a connection
 2. Maintain the connection, keep listening, and replying
 3. Implement congestion control and flow control based on CWND and AWND fields.
-4. Manage the TCP pipeline
+4. Manage the RDT pipeline
 5. Close the connection and release the resources.
 
 The factors that cause the channel to be unreliable are:
@@ -46,16 +46,19 @@ The factors that cause the channel to be unreliable are:
 - Corruption
 
 # 2 Testing & Grading
-You should implement an RDTSocket based on the requirements. We will use our RDT SERVER to test your protocol. Therefore, construct your data packages carefully based on our RDTHeader template. Please note that our RDT SERVER assumes that 10% of all incoming packets will be lost. For packets that are not lost, there is a 10% chance of corruption or a 10% chance of a delay of 1 to 5 seconds.
+
+## 2.1 Testing
+You should implement an RDTSocket based on the requirements. 
+We will use a proxy SERVER to test your protocol. When using your RDTSocket to build server and client to communicate with each other, all data sent will pass through our proxy server. Therefore, construct your data packages carefully based on our RDTHeader template. Please note that our proxy SERVER assumes that 10% of all incoming packets will be lost. For packets that are not lost, there is a 10% chance of corruption or a 10% chance of a delay of 1 to 5 seconds.
 
 The total score is 100 points, plus a bonus of 20 points.
 
 **How to test your RDTSocket?**
 
-You can test it through our deployed relay server. Therefore, you need to include a test_case field in your packet header with values ranging from 0 to 10 (tentative) (no need to calculate it into the CHECKSUM). When test_case is 0, it represents a normal network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
+You can test it through our deployed proxy server. Therefore, you need to include a test_case field in your packet header with values ranging from 0 to 10 (tentative) (no need to calculate it into the CHECKSUM). When test_case is 0, it represents a reliable network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
 The IP address and test port of the testing server will be released later.
 
-## 2.1 Grading
+## 2.2 Grading
 1. Establish (3-way handshakes) & close (4-way handshakes) connection with the RDT SERVER. (5 pts)
 2. Use your RDTSocket as a client to send multiple short messages to the RDT SERVER. (10 pts)
 3. Use your RDTSocket as a server to receive short messages from the RDT SERVER. (10 pts)
@@ -66,13 +69,13 @@ The IP address and test port of the testing server will be released later.
 
 **Bonus**: Implement congestion and flow control system in more than 1 manner will awarded up to 20 pts as bonus.
 
-## 2.2 Presentation (30 pts)
+<!-- ## 2.2 Presentation (30 pts)
 For the final presentation:
 1. Add a debug mode to the RDTSocket to print out information about the transmission process.
 2. Introduce how you implemented congestion control, flow control, and the pipeline.
 3. Explain how you tested and evaluated the performance of your implementation.
 
-You will need to create a video of about 5-8 minutes containing the contents described above.
+You will need to create a video of about 5-8 minutes containing the contents described above. -->
 
 # 3 Notes
 

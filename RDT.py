@@ -88,8 +88,8 @@ class RDTSocket():
     
     def close(self):
         """
-        Close current TCP connection.
-        You should follow the 4-way-handshake, and then the TCP connection will be terminated.
+        Close current RDT connection.
+        You should follow the 4-way-handshake, and then the RDT connection will be terminated.
         """
         #############################################################################
         # TODO: YOUR CODE HERE                                                      #
