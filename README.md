@@ -24,9 +24,9 @@ A comprehensive report documenting the implementation process, insights, and imp
 The organization of the packet header can play a crucial role in facilitating reliable transmission. Based on the diagram provided, the packet header can be structured as follows.    
 You should construct your RDT header as the template RDTHeader class, and it should contain at least the following data fields:
 
-|SYN|FIN|ACK|SEQ|SEQACK|LEN|CWND|AWND|CHECKSUM|PAYLOAD|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
+|SYN|FIN|ACK|SEQ|SEQACK|LEN|AWND|CHECKSUM|PAYLOAD|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
 
 ### 1.2 Reliable Data Transfer
 For a stable connection, the following steps are to be executed consecutively:
