@@ -87,3 +87,6 @@ You will need to create a video of about 5-8 minutes containing the contents des
     2. Assume the link becomes unreliable, try to fix the issues of loss, corruption, and delay.
     3. Add congestion control and flow control mechanisms.
     4. Attempt to fulfill the bonus requirement by creating a pipeline sending mode for your RDTSocket.
+
+# Contact
+If you have any questions about this project, please start a new issue.
