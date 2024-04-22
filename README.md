@@ -1,6 +1,6 @@
 # CS305-2024Spring-FinalProject: Reliable Data Transfer using UDP
 
-This project focuses on the development of a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. Specifically, this project requires you to use UDP as the transport layer protocol and implement an RDT protocol at the application layer. The primary objective is to design and implement a protocol that can address the challenges and limitations of RDT in an unreliable network environment. By leveraging UDP and exploring various mechanisms for reliable transmission, the project aims to create a robust and efficient communication protocol. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication. Through this project, we seek to enhance the existing methods of data transfer and contribute to the field of reliable communication protocols.
+This project focuses on the development of a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. Specifically, this project requires you to use UDP as the transport layer protocol and implement an RDT protocol at the application layer. The primary objective is to design and implement a protocol that can address the challenges and limitations of RDT in an unreliable network environment. By leveraging UDP and exploring various mechanisms for reliable transmission, the project aims to create a robust and efficient communication protocol. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication.
 
 A comprehensive report documenting the implementation process, insights, and improvements made is expected. Additional research beyond the provided instructions is encouraged to contribute to the project's success.
 
@@ -22,38 +22,26 @@ A comprehensive report documenting the implementation process, insights, and imp
 ``` -->
 
 The organization of the packet header can play a crucial role in facilitating reliable transmission. Based on the diagram provided, the packet header can be structured as follows.    
-You should construct your RDT header as the template RDTHeader class, and it should contain at least the following data fields:
+You should construct your RDT header as the template RDTHeader class, and it should contain the following data fields:
 
-|test_case|Source_address|Target_address|SYN|FIN|ACK|SEQ|SEQACK|LEN|RWND|CHECKSUM|PAYLOAD|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|1 bytes|6 bytes|6 bytes|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
-|Indicate the test case will be used, ranged in 0~10|IP address and port of sender|IP address and port of receiver|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|LEN bytes|
+|test_case|Source_address|Target_address|SYN|FIN|ACK|SEQ|SEQACK|LEN|RWND|CHECKSUM|OPTIONAL|PAYLOAD|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|1 bytes|6 bytes|6 bytes|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|8 bytes|LEN bytes|
+|Indicate the test case will be used, ranged in 0~10|IP address and port of sender|IP address and port of receiver|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|Reserved space for adding any additional fields you deem necessary|LEN bytes|
 
-We provided the template code of RDTSocket in *RDT.py* and template code of RDT packet Header in *Header.py*. Based on our Header.py file, you could also add some other attributes if necessary.
+We provided the template code of RDTSocket in *`RDT.py`* and template code of RDT packet Header in *`Header.py`*. Based on our `Header.py` file, you could also add some other attributes up to **8 bytes** as optional.
 
-*Please note that during data transmission, all above data should be encoded to corresponding lenght bytes and added together. You are not supposed to use the first **3** fields (test_case, Source_address, Target_address) to calculate the CHECKSUM. Source_address and Target_address should be formatted by stream.*
+*Please note that during data transmission, all above data should be encoded to corresponding lenght bytes and added together following the order in the table above. You are not supposed to use the first **3** fields (test_case, Source_address, Target_address) to calculate the `CHECKSUM`, `Source_address` and `Target_address` should be formatted by stream.*
 
 ### 1.2 Reliable Data Transfer
 For a reliable connection, the following steps are to be executed consecutively:
 
-1. Accept and establish a connection
-2. Maintain the connection, keep listening, and replying
-4. Retransmitting data packets that have timed out without response.
-0. Requesting retransmission from the sender for data packets with failed CHECKSUM verification.
-4. Send large file in **pipeline** manner.
-5. Implementing data packet integrity verification, sequence validation, and retransmission strategy (fast retransmission, selective retransmission, etc.) in the process of data transmission and reception using the **pipeline** approach.
-3. Implement congestion control and flow control.
-5. Close the connection and release the resources.
-
-The factors that cause the channel to be unreliable are:
-
-- Delay
-- Loss
-- Corruption
-
-Next, we will explain the detail of each function you have to implement.
 #### 1 Accept and establish a connection
-You are supposed to implement the function *bind(), accept(), and connect()*. The function *bind()* could bind the current RDT socket to a specific address. Function *accept()* and *connect()* are used to establish connection between client and server. You are supposed to implement the 3-way-handshake in these two function. For example:
+You are supposed to implement the function `bind(), accept(), and connect()`. The function `bind()` could bind the current RDT socket to a specific address. Function *accept()* and *connect()* are used to establish connection between client and server. You are supposed to implement the 3-way-handshake in these two function. 
+
+**Function *`accept()`* needs to support multithreading and be able to establish multiple socket connections. Messages from different sockets should be isolated from each other, requiring you to multiplex the data received at the underlying UDP.**
+
+For example:
 ```python
 # As a Server
 target_addr = ("123.4.5.6", 12345)
@@ -68,19 +56,17 @@ socket.bind(target_addr)
 socket.connet()
 ```
 
-#### 2 Maintain the connection
-
-#### 3 Packet verification
-To ensure reliable data transmission, you are supposed to implement data validation functionality. Specifically, you need to calculate a 16-bit checksum for all fields in the packet except for **test_case, Source_address, and Target_address**, and then fill in the CHECKSUM field. This ensures that the receiver can perform validation checks upon receiving the data. *You could implement related feature in both **send() & recv()** or define a new function and call it if need.*
+#### 2 Packet verification
+To ensure reliable data transmission, you are supposed to implement data validation functionality. Specifically, you need to calculate a 16-bit checksum for all fields in the packet except for **`test_case, Source_address, and Target_address`**, and then fill in the `CHECKSUM` field. This ensures that the receiver can perform validation checks upon receiving the data. *You could implement related feature in both **`send() & recv()`** or define a new function and call it if need.*
 
 #### 3 Retransmitting
-Generally, in an unreliable network environment, the connection might occur packets lost, corrupted or delyaed. Hence it is necessary to retransmit these error packets when above error happened. Specifically, when some packets that have been sent do not receive a response with ACK=1, which means that they have been received successfully, it is necessary to resend those packets. You can implement this feature using any strategy you think suitable. For example, maintain a list of sent data, remove an item from the list when it receives the correct response, and resend the data if no response is received within a set duration.
+Generally, in an unreliable network environment, the connection might occur packets lost, corrupted or delyaed. Hence it is necessary to retransmit these error packets when above error happened. Specifically, when some packets that have been sent do not receive a response with `ACK=1`, which means that they have been received successfully, it is necessary to resend those packets. You can implement this feature using any strategy you think suitable. For example, maintain a list of sent data, remove an item from the list when it receives the correct response, and resend the data if no response is received within a set duration.
 
 #### 4 Retransmission request
-Sometimes, during the reception of a large amount of data, the receiver may experience timeouts for certain packets that are not delivered, and if the sender does not resend these packets, the receiver needs to send a request to the sender to specify retransmission. This feature should be implemented in bot **recv() & send()**.
+Sometimes, during the reception of a large amount of data, the receiver may experience timeouts for certain packets that are not delivered, and if the sender does not resend these packets, the receiver needs to send a request to the sender to specify retransmission. This feature should be implemented in bot **`recv() & send()`**.
 
 #### 5 Pipeline manner
-Sometimes, we need to transmit large amounts of data that cannot be sent all at once, and sequential transmission is inefficient. In such cases, data transmission needs to be done in a PIPELINE manner. Specifically, you are supposed to implement a basic data chunking and sorting method that can divide a large dataset into multiple small CHUNKs that can be transmitted directly. Additionally, it should ensure that the receiver can reassemble these data chunks into the original large dataset upon receipt. This feature shoule be implemented in **send()** For example,
+Sometimes, we need to transmit large amounts of data that cannot be sent all at once, and sequential transmission is inefficient. In such cases, data transmission needs to be done in a PIPELINE manner. Specifically, you are supposed to implement a basic data chunking and sorting method that can divide a large dataset into multiple small CHUNKs that can be transmitted directly. Additionally, it should ensure that the receiver can reassemble these data chunks into the original large dataset upon receipt. This feature shoule be implemented in **`send()`** For example,
 ```python
 target_addr = ("123.4.5.6", 12345)
 socket = TCPSocket(...)
@@ -91,11 +77,11 @@ with open('test.txt', 'r') as f:
 socket.close()
 ```
 
-#### 7 Congestion control & Flow control
+#### 6 Congestion control & Flow control
 
 
-#### 8 Close connection
-You are supposed to implement the 4-way handshake to close a reliable connection in **close()** function.
+#### 7 Close connection
+You are supposed to implement the 4-way handshake to close a reliable connection in **`close()`** function.
 
 # 2 Testing & Grading
 ## Environment
@@ -114,10 +100,10 @@ A complete test system example is structured as shown in the figure above, where
 To facilitate smoother testing, please adhere to the following guidelines by using the IP address and port of our official proxy server when conducting tests.
 
 ## 2.2 Guidelines
-When the network environment is like the example figure above. Due to the header size totaling **34 bytes**, we have set the maximum data size that can be received at one time in the proxy server to **290 bytes.** Any excess beyond this size will be discarded. Therefore, please ensure that the size of each packet you send does not exceed 256 bytes, which means, the length of *PAYLOAD* should not be larger than **256** bytes.
-1. Please ensure that your Sender correctly saves the real destination address ("123.4.5.3", 12345) and local address ("123.4.5.2", 12345) in the header when sending data. The socket should be configured to send data to the address ("123.4.5.1", 12345) during data transmission.
+When the network environment is like the example figure above. Due to the header size totaling **42 bytes**, we have set the maximum data size that can be received at one time in the proxy server to **298 bytes.** Any excess beyond this size will be discarded. Therefore, please ensure that the size of each packet you send does not exceed 256 bytes, which means, the length of *PAYLOAD* should not be larger than **256** bytes.
+1. Please ensure that your Sender correctly saves the real destination address `("123.4.5.3", 12345)` and local address `("123.4.5.2", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.1", 12345)` during data transmission.
 2. Our proxy server will parse the first **13 bytes** of your data upon receipt to extract the *test_case, Source_address, and Target_address*. It will then simulate an unreliable network based on the *test_case* you set before forwarding your data to your receiver.
-3. Please ensure that your Receiver correctly saves the real Sender address ("123.4.5.2", 12345) and local address ("123.4.5.3", 12345) in the header when sending data. The socket should be configured to send data to the address ("123.4.5.2", 12345) during data transmission and keep listening to the local address ("123.4.5.3", 12345).
+3. Please ensure that your Receiver correctly saves the real Sender address `("123.4.5.2", 12345)` and local address `("123.4.5.3", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.2", 12345)` during data transmission and keep listening to the local address `("123.4.5.3", 12345)`.
 
 <!-- ```python
 target_addr = ("123.4.5.6", 12345)
@@ -134,19 +120,19 @@ The total score is 100 points, plus a bonus of 20 points.
 
 **How to test your RDTSocket?**
 
-You can test it through our deployed proxy server. Therefore, you need to include a test_case field in your packet header with values ranging from 0 to 10 (tentative) (no need to calculate it into the CHECKSUM). When test_case is 0, it represents a reliable network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
+You can test it through our deployed proxy server. Therefore, you need to include a test_case field in your packet header with values ranging from 0 to 10 (tentative) (no need to calculate it into the `CHECKSUM`). When test_case is 0, it represents a reliable network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
 The IP address and test port of the testing server will be released later.
 
 ## 2.4 Grading
-1. Establish (3-way handshakes) & close (4-way handshakes) connection. (5 pts)
-2. Your RDTSocket could be used as a client to send multiple short messages to the server built by your RDTSocket. (10 pts)
-3. Your RDTSocket could be used as a server to receive short messages from the client built by your RDTSocket. (10 pts)
-4. Your RDTSocket could be used as a erver to receive a large file from the a server built by your RDTSocket. The file should be separated into multiple CHUNKs and will be sent in a disordered sequence, with some packets being lost. Your RDTSocket should receive and buffer all this data and recover it to the original file based on the sequence number of each packet. If the RDTSocket detects lost packets, it should send a request to the SERVER and require a re-send. (10 pts)
-5. Your RDTSocket could be used as a client to send a large file to the server built by our RDTSocket. This file should be separated into multiple CHUNKs and sent in a PIPELINE way. During testing, we will delay the reception of data to simulate congestion situations. Please ensure to maintain the sizes of the congestion control window and flow control window to stop sending data when the server is congested. Resume sending data only when notified by the server that it can receive data again. Sending more than 30% of data beyond the buffer will be considered a failure to complete the flow control function. (15 pts)
+1. Establish (3-way handshakes) & close (4-way handshakes) connection. (10 pts)
+2. Your RDTSocket could be used as a client to send multiple short messages to the server built by your RDTSocket. (15 pts)
+3. Your RDTSocket could be used as a server to receive short messages from the client built by your RDTSocket. (15 pts)
+4. Your RDTSocket could be used as a erver to receive a large file from the a server built by your RDTSocket. The file should be separated into multiple CHUNKs and will be sent in a disordered sequence, with some packets being lost. Your RDTSocket should receive and buffer all this data and recover it to the original file based on the sequence number of each packet. If the RDTSocket detects lost packets, it should send a request to the SERVER and require a re-send. (15 pts)
+5. Your RDTSocket could be used as a client to send a large file to the server built by our RDTSocket. This file should be separated into multiple CHUNKs and sent in a PIPELINE way. During testing, we will delay the reception of data to simulate congestion situations. Please ensure to maintain the sizes of the congestion control window and flow control window to stop sending data when the server is congested. Resume sending data only when notified by the server that it can receive data again. Sending more than 30% of data beyond the buffer will be considered a failure to complete the flow control function. (20 pts)
 
-6. We will prepare 10 different test case for testing the performance of your RDTSocket. (5 pts per case, total 50 pts)
+6. We will prepare 10 different test case for testing the performance of your RDTSocket. (2.5 pts per case, total 25 pts)
 
-**Bonus**: Implement congestion and flow control system in more than 1 manner will awarded up to 20 pts as bonus.
+**Bonus**: You could also evaluate the performance of your implemented socket and summarize into a report (20 pts as bonus) .
 
 <!-- ## 2.2 Presentation (30 pts)
 For the final presentation:

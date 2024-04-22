@@ -30,10 +30,14 @@ class RDTSocket():
         #############################################################################
         raise NotImplementedError()
     
-    def accept(self):
+    def accept(self) -> RDTSocket: # type: ignore
         """
         When using this SOCKET to create an RDT SERVER, it should accept the connection
         from a CLIENT. After that, an RDT connection should be established.
+        Please note that this function needs to support multithreading and be able to 
+        establish multiple socket connections. Messages from different sockets should 
+        be isolated from each other, requiring you to multiplex the data received at 
+        the underlying UDP.
         """
         #############################################################################
         # TODO: YOUR CODE HERE                                                      #
