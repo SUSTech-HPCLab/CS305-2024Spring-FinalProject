@@ -65,7 +65,8 @@ class RDTSocket():
         
         params:
             data:       The data that will be sent.
-            tcpheader:  Message header.Include SYN, ACK, FIN, CHECKSUM, etc.
+            tcpheader:  Message header.Include SYN, ACK, FIN, CHECKSUM, etc. Use this
+                        attribute when needed.
         """
         #############################################################################
         # TODO: YOUR CODE HERE                                                      #
