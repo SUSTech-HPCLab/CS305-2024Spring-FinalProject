@@ -70,7 +70,7 @@ Generally, in an unreliable network environment, the connection might occur pack
 
 
 #### 4 Retransmission request
-Sometimes, during the reception of a large amount of data, the receiver may experience timeouts for certain packets that are not delivered, and if the sender does not resend these packets, the receiver needs to send a request to the sender to specify retransmission. This feature should be implemented in bot **`recv() & send()`**.
+Sometimes, during the reception of a large amount of data, the receiver may experience timeouts for certain packets that are not delivered, and if the sender does not resend these packets, the receiver needs to send a request to the sender to specify retransmission. This feature should be implemented in both **`recv() & send()`**.
 
 #### 5 Data segmentation 
 Sometimes, we need to transmit large amounts of data that cannot be sent all at once. In such cases, you are supposed to implement a basic data chunking and sorting method that can divide a large dataset into multiple small CHUNKs that can be transmitted directly. Additionally, it should ensure that the receiver can reassemble these data chunks into the original large dataset upon receipt. This feature shoule be implemented in **`send()`** For example,
