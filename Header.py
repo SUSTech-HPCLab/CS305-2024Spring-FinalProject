@@ -1,57 +1,75 @@
 import json
 
-class RDTHeader():
+class TCPHeader():
     def __init__(self, SYN: int = 0, FIN: int = 0, ACK: int = 0, SEQ: int = 0, SEQACK: int = 0, LEN: int = 0, CHECKSUM: int = 0, PAYLOAD = None, RWND: int = 0)  -> None:
-        self.SYN = SYN                      # SYN flag, 1 byte
-        self.FIN = FIN                      # FIN flag, 1 byte
-        self.ACK = ACK                      # ACK flag, 1 byte
-        self.SEQ = SEQ                      # Sequence number, 4 bytes
-        self.SEQACK = SEQACK                # ACK sequence number, 4 bytes
-        self.LEN = LEN                      # Length of the payload, 4 bytes
-        self.RWND = RWND                    # Receiver window size, 4 bytes
-        self.CHECKSUM = CHECKSUM            # Checksum, 2 bytes
-        self.PAYLOAD = PAYLOAD              # Payload
+        self.test_case = 0
         
-        self.test_case = None               # Test case identifier, 1 byte
-        self.Source_address = (None, None)  # Source IP and port, 6 bytes
-        self.Target_address = (None, None)  # Target IP and port, 6 bytes
-
+        self.SYN = SYN                  # 1 bytes
+        self.FIN = FIN                  # 1 bytes
+        self.ACK = ACK                  # 1 bytes
+        self.SEQ = SEQ                  # 4 bytes
+        self.SEQACK = SEQACK            # 4 bytes
+        self.LEN = LEN                  # 4 bytes
+        self.CHECKSUM = CHECKSUM        # 2 bytes
+        self.PAYLOAD = PAYLOAD          # Data LEN bytes
+        # self.CWND = CWND                # Congestion window size 4 bytes
+        self.RWND = AWND                # Notification window size 4 bytes
+        self.OPTIONAL = 0
+        
+        self.Source_address = [127,0,0,1,12334]  # Souce ip and port
+        self.Target_address = [127,0,0,1,12345]  # Target ip and port
+        
+        
     def to_bytes(self):
-        json_data =  {
-            "SYN": self.SYN.to_bytes(1, 'big').hex(),
-            "FIN": self.FIN.to_bytes(1, 'big').hex(),
-            "ACK": self.ACK.to_bytes(1, 'big').hex(),
-            "SEQ": self.SEQ.to_bytes(4, 'big').hex(),  
-            "SEQACK": self.SEQACK.to_bytes(4, 'big').hex(),
-            "LEN": self.LEN.to_bytes(4, 'big').hex(),
-            # "CWND": self.CWND.to_bytes(4, 'big').hex(),
-            "RWND": self.RWND.to_bytes(4, 'big').hex(),
-            "CHECKSUM": self.CHECKSUM.to_bytes(2, 'big').hex(),
-            "PAYLOAD": self.PAYLOAD if isinstance(self.PAYLOAD, str) else self.PAYLOAD.hex() if self.PAYLOAD else None,
-            "test_case": self.test_case.to_bytes(1, 'big').hex(),
-            "Source_address": f"{self.Source_address[0]}:{self.Source_address[1]}",
-            "Target_address": f"{self.Target_address[0]}:{self.Target_address[1]}"
-        }
-        return json.dumps(json_data).encode()
-    
+        test_case = self.test_case.to_bytes(1, 'big')
+        Source_address = self.Source_address[0].to_bytes(1, 'big') + self.Source_address[1].to_bytes(1, 'big') + \
+                            self.Source_address[2].to_bytes(1, 'big') + self.Source_address[3].to_bytes(1, 'big') + \
+                            self.Source_address[4].to_bytes(2, 'big')
+                            
+        Target_address = self.Target_address[0].to_bytes(1, 'big') + self.Target_address[1].to_bytes(1, 'big') + \
+                            self.Target_address[2].to_bytes(1, 'big') + self.Target_address[3].to_bytes(1, 'big') + \
+                            self.Target_address[4].to_bytes(2, 'big')
+        
+        SYN = self.SYN.to_bytes(1, 'big')
+        FIN = self.FIN.to_bytes(1, 'big')
+        ACK = self.FIN.to_bytes(1, 'big')
+        SEQ = self.SEQ.to_bytes(4, 'big')
+        SEQACK = self.SEQACK.to_bytes(4, 'big')
+        LEN = self.LEN.to_bytes(4, 'big')
+        RWND = self.RWND.to_bytes(4, 'big')
+        CHECKSUM = self.CHECKSUM.to_bytes(2, 'big')
+        PAYLOAD = self.PAYLOAD.encode() if isinstance(self.PAYLOAD, str) else "".encode()
+        OPTIONAL = self.OPTIONAL.to_bytes(8, 'big')
+        
+        return b''.join([test_case, Source_address, Target_address, SYN, FIN, ACK, SEQ, SEQACK, LEN, RWND, CHECKSUM, OPTIONAL, PAYLOAD])
 
+    
     def from_bytes(self, data):
-        data = json.loads(data)
-        self.SYN = int.from_bytes(bytes.fromhex(data["SYN"]), 'big')
-        self.FIN = int.from_bytes(bytes.fromhex(data["FIN"]), 'big')
-        self.ACK = int.from_bytes(bytes.fromhex(data["ACK"]), 'big')
-        self.SEQ = int.from_bytes(bytes.fromhex(data["SEQ"]), 'big') if data["SEQ"] else None
-        self.SEQACK = int.from_bytes(bytes.fromhex(data["SEQACK"]), 'big') if data["SEQACK"] else None
-        self.LEN = int.from_bytes(bytes.fromhex(data["LEN"]), 'big')
-        self.RWND = int.from_bytes(bytes.fromhex(data["RWND"]), 'big')
-        self.CHECKSUM = int.from_bytes(bytes.fromhex(data["CHECKSUM"]), 'big')
-        # self.CWND = int.from_bytes(bytes.fromhex(data["CWND"]), 'big')
-        self.PAYLOAD = data['PAYLOAD']
-        self.test_case = int.from_bytes(bytes.fromhex(data["test_case"]), 'big')
-        source = data["Source_address"].split(':')
-        target = data["Target_address"].split(':')
-        self.source_address = (source[0], int(source[1]))
-        self.target_address = (target[0], int(target[1]))
+        self.test_case = data[0]
+        Source_address = []
+        for i in range(4):
+            Source_address.append(data[i + 1])
+        Source_address.append(int.from_bytes(data[5:7], 'big'))
+        self.Source_address = Source_address
+        
+        Target_address = []
+        for i in range(4):
+            Target_address.append(data[i + 7])
+        Target_address.append(int.from_bytes(data[11:13], 'big'))
+        self.Target_address = Target_address
+            
+        
+        self.SYN = data[13]
+        self.FIN = data[14]
+        self.ACK = data[15]
+        self.SEQ = int.from_bytes(data[16:20], 'big')
+        self.SEQACK = int.from_bytes(data[20:24], 'big')
+        self.LEN = int.from_bytes(data[24:28], 'big')
+        self.CHECKSUM = int.from_bytes(data[28:30], 'big')
+        self.RWND = int.from_bytes(data[30:34], 'big')
+        self.OPTIONAL = int.from_bytes(data[34:42], 'big')
+        
+        self.PAYLOAD = data[42:].decode()
 
         return self
 
