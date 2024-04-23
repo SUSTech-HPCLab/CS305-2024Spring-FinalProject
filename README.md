@@ -103,7 +103,7 @@ Each function must be independently implemented by you, using only the standard 
  
 
 ## 2.1 Test system
-When testing your RDTSocket, you could should make our porxy server as your target server. And make sure that your **real target server address & port** has been stored in *Target_address* and your host *Source_address* have been stored in *Source_address*.
+When testing your RDTSocket, you should make our porxy server as your target server. And make sure that your **real target server address & port** has been stored in *Target_address* and the ip adress and port of your host have been stored in *Source_address*.
 
 <p align="center">
   <img src="./img/proxy.png" width="70%"/>
