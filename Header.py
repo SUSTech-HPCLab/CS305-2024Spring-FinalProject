@@ -1,5 +1,3 @@
-import json
-
 class TCPHeader():
     def __init__(self, SYN: int = 0, FIN: int = 0, ACK: int = 0, SEQ: int = 0, SEQACK: int = 0, LEN: int = 0, CHECKSUM: int = 0, PAYLOAD = None, RWND: int = 0)  -> None:
         self.test_case = 0
@@ -13,7 +11,7 @@ class TCPHeader():
         self.CHECKSUM = CHECKSUM        # 2 bytes
         self.PAYLOAD = PAYLOAD          # Data LEN bytes
         # self.CWND = CWND                # Congestion window size 4 bytes
-        self.RWND = AWND                # Notification window size 4 bytes
+        self.RWND = RWND                # Notification window size 4 bytes
         self.OPTIONAL = 0
         
         self.Source_address = [127,0,0,1,12334]  # Souce ip and port

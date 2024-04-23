@@ -51,8 +51,9 @@ For example:
 target_addr = ("123.4.5.6", 12345)
 socket = RDTSocket(...)
 socket.bind(target_addr)
-socket.accept()
-
+server_socket = socket.accept()
+```
+```python
 # As a Client
 target_addr = ("123.4.5.7", 12345)
 socket = RDTSocket(...)
@@ -99,9 +100,7 @@ You are supposed to implement the 4-way handshake to close a reliable connection
 # 2 Testing & Grading
 ## Environment
 Each function should be implemented by yourself without the support of additional libraries. We will conduct tests in a **Python 3.9.0** environment. For building the underlying communication protocol, you can use **UDP of socket library**. 
-<!-- ```shell
-python=3.9.0
-``` -->
+
 ## 2.1 Test system
 When testing your RDTSocket, you could should make our porxy server as your target server. And make sure that your **real target server address & port** has been stored in *Target_address* and your host *Source_address* have been stored in *Source_address*.
 
@@ -150,7 +149,7 @@ The IP address and test port of the testing server will be released later.
 
 7. You need to submit a report in which you explain how each function is implemented. The performance analysis of RDT is included. （15 pts）
 
-**Bonus**: Design is pending. Any mechanism that improves the RDT transfer rate is permitted. If you have any suggestions, please feel free to contact the instructors or SAs. (20 bonus pts)
+**Bonus**: To be decided. Any mechanism that improves the RDT transfer rate is permitted. If you have any ideas, please confirm with the instructors or SAs before you start. (20 bonus pts)
 
 <!-- ## 2.2 Presentation (30 pts)
 For the final presentation:
