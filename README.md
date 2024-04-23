@@ -99,7 +99,8 @@ You are supposed to implement the 4-way handshake to close a reliable connection
 
 # 2 Testing & Grading
 ## Environment
-Each function should be implemented by yourself without the support of additional libraries. We will conduct tests in a **Python 3.9.0** environment. For building the underlying communication protocol, you can use **UDP of socket library**. 
+Each function must be independently implemented by you, using only the standard libraries provided with Python; no external libraries are permitted. We will test your implementation in an environment running **Python 3.9.0**. Note that the use of the **socket library** is restricted solely to functions related to the **UDP** protocol.
+ 
 
 ## 2.1 Test system
 When testing your RDTSocket, you could should make our porxy server as your target server. And make sure that your **real target server address & port** has been stored in *Target_address* and your host *Source_address* have been stored in *Source_address*.
