@@ -27,7 +27,7 @@ You should construct your RDT header as the template RDTHeader class, and it sho
 |test_case|Source_address|Target_address|SYN|FIN|ACK|SEQ|SEQACK|LEN|RWND|CHECKSUM|OPTIONAL|PAYLOAD|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |1 bytes|6 bytes|6 bytes|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|8 bytes|LEN bytes|
-|Indicate the test case will be used, ranged in 0~10|IP address and port of sender|IP address and port of receiver|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|Reserved space for adding any additional fields you deem necessary|LEN bytes|
+|Indicate the test case will be used, ranged in 0~10|IP address and port of sender|IP address and port of receiver|SYN in TCP|FIN in TCP|ACK in TCP|SEQ in TCP|4 bytes|Length of PYALOAD|Size of Receiving window|Chcksum in other protocol|Reserved space for adding any additional fields you deem necessary|Data|
 
 We provided the template code of RDTSocket in *`RDT.py`* and template code of RDT packet Header in *`Header.py`*. Based on our `Header.py` file, you could also add some other attributes up to **8 bytes** as optional. 
 
@@ -65,7 +65,7 @@ socket.connet()
 To ensure reliable data transmission, you are supposed to implement data validation functionality. Specifically, you need to calculate a 16-bit checksum for all fields in the packet except for **`test_case, Source_address, and Target_address`**, and then fill in the `CHECKSUM` field. This ensures that the receiver can perform validation checks upon receiving the data. *You could implement related feature in both **`send() & recv()`** or define a new function and call it if need.*
 
 #### 3 Retransmitting
-Generally, in an unreliable network environment, the connection might occur packets lost, corrupted or delyaed. Hence it is necessary to retransmit these error packets when above error happened. Specifically, when some packets that have been sent do not receive a response with `ACK=1`, which means that they have been received successfully, it is necessary to resend those packets. You can implement this feature using any strategy you think suitable. For example, maintain a list of sent data, remove an item from the list when it receives the correct response, and resend the data if no response is received within a set duration.
+Generally, in an unreliable network environment, the connection might occur packets lost, corrupted or delyaed. Hence it is necessary to retransmit these error packets when above error happened. Specifically, when some packets that have been sent do not receive a response with `ACK=1`, which means that they have not been received successfully, it is necessary to resend those packets. You can implement this feature using any strategy you think suitable. For example, maintain a list of sent data, remove an item from the list when it receives the correct response, and resend the data if no response is received within a set duration.
 
 
 
@@ -143,8 +143,8 @@ The IP address and test port of the testing server will be released later.
 3. Calculation and verification of the CHECKSUM correctly. (5 pts)
 4. Complete data segmentation. (5 pts)
 5. Your RDTSocket could be used as a client to send multiple short messages to the server built by your RDTSocket. (10 pts)
-6. Your RDTSocket could be used as a server to receive a large file from the a server built by your RDTSocket. The file should be separated into multiple CHUNKs and will be sent in a disordered sequence, with some packets being lost. Your RDTSocket should receive and buffer all this data and recover it to the original file based on the sequence number of each packet. If the RDTSocket detects lost packets, it should send a request to the SERVER and require a re-send. (10 pts)
-7. Your RDTSocket could be used as a client to send a large file to the server built by our RDTSocket. This file should be separated into multiple CHUNKs and sent in a PIPELINE way. During testing, we will delay the reception of data to simulate congestion situations. Please ensure to maintain the sizes of the congestion control window and flow control window to stop sending data when the server is congested. Resume sending data only when notified by the server that it can receive data again. Sending more than 30% of data beyond the buffer will be considered a failure to complete the flow control function. (20 pts)
+6. Your RDTSocket could be used as a server to receive a large file from the a server built by your RDTSocket. The file should be separated into multiple CHUNKs and will be sent in a disordered sequence, with some packets being lost. Your RDTSocket should receive and buffer all this data and recover it to the original file based on the sequence number of each packet. If the RDTSocket detects lost packets, it should send a request to the CLIENT and require a re-send. (10 pts)
+7. Your RDTSocket could be used as a client to send a large file to the server built by our RDTSocket. This file should be separated into multiple CHUNKs and sent in a PIPELINE way. During testing, we will delay the reception of data to simulate congestion situations. **Please ensure your RDTSocket could maintain the sizes of the congestion control window and flow control window** to control the sending and receiving speed of data, and stop sending data when the server is congested. Resume sending data only when notified by the server that it can receive data again. Sending more than 30% of data beyond the buffer will be considered a failure to complete the flow control function. (20 pts)
 
 6. We will prepare different test cases for testing the performance of your RDTSocket. (total 25 pts)
 
