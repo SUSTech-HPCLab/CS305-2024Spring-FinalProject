@@ -27,7 +27,7 @@ You should construct your RDT header as the template RDTHeader class, and it sho
 |test_case|Source_address|Target_address|SYN|FIN|ACK|SEQ|SEQACK|LEN|RWND|CHECKSUM|OPTIONAL|PAYLOAD|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |1 bytes|6 bytes|6 bytes|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|8 bytes|LEN bytes|
-|Indicate the test case will be used, ranged in 0~10|IP address and port of sender|IP address and port of receiver|SYN in TCP|FIN in TCP|ACK in TCP|SEQ in TCP|4 bytes|Length of PYALOAD|Size of Receiving window|Chcksum in other protocol|Reserved space for adding any additional fields you deem necessary|Data|
+|Indicate the test case will be used, ranged in 0~10|IP address and port of sender|IP address and port of receiver|SYN in TCP|FIN in TCP|ACK in TCP|SEQ in TCP|ACK number in TCP|Length of PYALOAD|Size of Receiving window|Chcksum in other protocol|Reserved space for adding any additional fields you deem necessary|Data|
 
 We provided the template code of RDTSocket in *`RDT.py`* and template code of RDT packet Header in *`Header.py`*. Based on our `Header.py` file, you could also add some other attributes up to **8 bytes** as optional. 
 
