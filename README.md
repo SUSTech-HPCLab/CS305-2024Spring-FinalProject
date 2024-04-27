@@ -1,4 +1,4 @@
-# CS305-2024Spring-FinalProject: Reliable Data Transfer using UDP
+# CS305-2024Spring-FinalProject: Reliable Data Transfer upon UDP
 
 This project focuses on developing a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. Specifically, this project requires you to use UDP as the transport layer protocol and implement an RDT protocol at the application layer. The primary objective is to design and implement a protocol that can address the challenges and limitations of data transfers in an unreliable network environment. The project aims to create a robust and efficient communication protocol by leveraging UDP and exploring various mechanisms for reliable transmission. The protocol will be designed to mitigate issues such as packet loss, delay, data corruption, and congestion, which commonly impact network communication.
 
@@ -27,7 +27,7 @@ Group: This is a group project. You must form a group of 2 or 3 students to comp
 +-------------------------+
 ``` -->
 
-The organization of the packet header can play a crucial role in facilitating reliable transmission. The packet header can be structured based on the table provided.
+The packet header can be structured based on the table provided.
 
 You should construct your RDT header as the template RDTHeader class, and it should contain the following data fields:
 
@@ -36,16 +36,16 @@ You should construct your RDT header as the template RDTHeader class, and it sho
 |1 bytes|6 bytes|6 bytes|1 byte|1 byte|1 byte|4 bytes|4 bytes|4 bytes|4 bytes|2 bytes|8 bytes|LEN bytes|
 |Indicate the test case will be used|IP address and port of sender|IP address and port of receiver|SYN in TCP|FIN in TCP|ACK in TCP|Sequence number in TCP|Acknowledge number in TCP|Length of PYALOAD|Size of Receiving window|Chcksum in TCP|Reserved space for adding any additional fields you deem necessary|Data|
 
-We provided the template code of RDTSocket in *`RDT.py`* and the template code of the RDT packet Header in *`Header.py`*. Based on our `Header.py` file, you could also add some other attributes up to **8 bytes** as  in the field `Reserved`. 
+We have provided the template code of RDTSocket in *`RDT.py`* and the template code of the RDT packet Header in *`Header.py`*. Based on our `Header.py` file, you could also add some other attributes up to **8 bytes** as  in the field `Reserved`. 
 
 Each field functions similarly to those in the TCP protocol, and you can find detailed information about them through the following [link](https://datatracker.ietf.org/doc/html/rfc9293).
 
-Please note that during data transmission, all the above data should be encoded to corresponding length bytes and added together following the order in the table above. You should not use the first **3** fields (test_case, Source_address, Target_address) to calculate the `CHECKSUM`. You need to calculate the `CHECKSUM` following the checksum calculation processing of the UDP protocol. `Source_address` and `Target_address` should be formatted by stream. * When some fields are not filled, please follow the padding logic used in our Header.py, `self.to_bytes()` function.
+*Please note that during data transmission, all the above data should be encoded to corresponding length bytes and added together following the order in the table above. You should not use the first **3** fields (test_case, Source_address, Target_address) to calculate the `CHECKSUM`. You need to calculate the `CHECKSUM` following the checksum calculation processing of the UDP protocol. `Source_address` and `Target_address` should be formatted by stream.* When some fields are not filled, please follow the padding logic used in our Header.py, `self.to_bytes()` function.
 
 
 
 ### 1.2 Reliable Data Transfer
-For a reliable connection, the following steps are to be executed consecutively:
+You are required to implement the following functions for an RDT socket:
 
 #### 1 Accept and establish a connection
 You are supposed to implement the functions `bind(), accept(), and connect()`. The function `bind()` could bind the current RDT socket to a specific address. Functions *accept()* and *connect()* are used to establish a connection between the client and server. You are supposed to implement the 3-way handshake in these two functions. Apart from that, you are also supposed to demultiplex the data received from UDP to different sockets, implementing the Socket's multiplexing. In other words, when maintaining multiple sockets simultaneously, *the buffer space for each socket should be isolated.*
@@ -141,7 +141,7 @@ The total score is 100 points, plus a bonus of up to 20 points.
 
 **How to test your RDTSocket?**
 
-You can test it through our deployed proxy server. Therefore, you need to include a `test_case` field in your packet header with values ranging from 0 to 10 (tentative) (no need to calculate it into the `CHECKSUM`). When test_case is 0, it represents a reliable network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
+You can test it through our deployed proxy server. Therefore, you must include a `test_case` field in your packet header (no need to calculate it in the `CHECKSUM`). When test_case is 0, it represents a reliable network environment without any packet loss or corruption operations. When test_case ranges from 1 to 10, it will test various functions of RDTSocket. When sending test data for testing, the packet header should include sender's IP and port, receiver's IP and port, as well as test_case, to complete data forwarding and network simulation operations.
 The IP address and test port of the testing server will be released later.
 
 ## 2.4 Grading
@@ -161,7 +161,7 @@ The IP address and test port of the testing server will be released later.
 **Bonus**: Any mechanism that improves the RDT transfer rate is permitted. If you have any ideas, please confirm with the instructors or SAs before you start. **(20 bonus pts)**
 
 We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and the RTT** (tentatively).
-We will set a baseline (to be announced later) for this metric. Any groups that perform higher than the baseline can get bonus points. We will rank your performance among all the groups in the class.
+We will set a baseline (to be announced later) for these metrics. Only the groups that perform better than the baseline can get bonus points. We will rank your performance among all the groups in the class.
 You must test the performance during the final demonstration.
 
 <!-- ## 2.2 Presentation (30 pts)
