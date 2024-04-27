@@ -6,9 +6,9 @@ This project focuses on developing a reliable data transfer (RDT) protocol using
 
 **Please read this project specification carefully and keep track of the updates!!!**.
 
-**IMPORTANT NOTE: We try our best to make this specification as clear as possible and cover all the problems we met during our testing. However, it is not uncommon for us to still miss important details in this specification. If there is anything unclear, you should submit issues in this repository or contact the instructors and SAs immediately, rather than guessing what you are required to do. Again, if you have any questions, please confirm with the instructors and SAs before starting**.
+**IMPORTANT NOTE: We try our best to make this specification as clear as possible and cover all the problems we met during our testing. However, it is not uncommon for us to still miss important details in this specification. If anything is unclear, you should submit issues in this repository or contact the instructors and SAs immediately rather than guessing what you must do. Again, if you have any questions, please confirm with the instructors and SAs before starting**.
 
-Group: You need to form a group of 2 or 3 students to complete this project.
+Group: This is a group project. You must form a group of 2 or 3 students to complete this project.
 
 ## 1 Requirements
 
@@ -92,7 +92,7 @@ socket.close()
 In the testing section, we have **a strict limit on the size of each chunk**, and you need to stick to that limit.
 
 #### 5 Pipeline manner
-Sequential transmission needs to wait for confirmation of the previous packet, which is inefficient. In such cases, data transmission must be done in a PIPELINE manner. You can transmit multiple packets simultaneously without waiting for confirmation of the previous packet. The number of in-flight packets is limited by the **RWND** and congestion window. In addition, you are also supposed to implement TCP fast retransmit when implementing the pipeline manner to ensure that anomalies such as packet loss in the pipeline can be detected and the lost packets could be retransmitted.
+Sequential transmission needs to wait for confirmation of the previous packet, which is inefficient. In such cases, data transmission must be done in a PIPELINE manner. You can transmit multiple packets simultaneously without waiting for confirmation of the previous packet. The number of in-flight packets is limited by the **RWND** and congestion window. In addition, you are also supposed to implement TCP fast retransmit when implementing the pipeline manner to ensure that anomalies such as packet loss in the pipeline can be detected and the lost packets can be retransmitted.
 
 
 
