@@ -162,7 +162,7 @@ The IP address and test port of the testing server will be released later.
 
 We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and the RTT** (tentatively).
 We will set a baseline (to be announced later) for these metrics. Only the groups that perform better than the baseline can get bonus points. We will rank your performance among all the groups in the class.
-You must test the performance during the final demonstration.
+You must show the performance during the final demonstration.
 
 <!-- ## 2.2 Presentation (30 pts)
 For the final demonstration:
