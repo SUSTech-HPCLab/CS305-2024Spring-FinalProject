@@ -158,9 +158,9 @@ The IP address and test port of the testing server will be released later.
 
 9. You must submit a report explaining how each function is implemented, including the performance analysis of RDT.（15 pts）
 
-**Bonus**: Any mechanism that improves the RDT transfer rate is permitted. If you have any ideas, please confirm with the instructors or SAs before you start. **(20 bonus pts)**
+**Bonus**: You can implement additional mechanisms to improve the RDT performance. If you have any ideas, please confirm with the instructors or SAs before you start. **(20 bonus pts)**
 
-We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and RTT of your socket/RTT of UDP** (tentatively).
+We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and RTT of your socket/RTT of UDP** (tentatively). 
 We will set a baseline (to be announced later) for these metrics. Only the groups that perform better than the baseline can get bonus points. We will rank your performance among all the groups in the class.
 You must show the performance during the final demonstration.
 
