@@ -42,6 +42,14 @@ Each field functions similarly to those in the TCP protocol, and you can find de
 
 *Please note that during data transmission, all the above data should be encoded to corresponding length bytes and added together following the order in the table above. You should not use the first **3** fields (test_case, Source_address, Target_address) to calculate the `CHECKSUM`. You need to calculate the `CHECKSUM` following the checksum calculation processing of the UDP protocol. `Source_address` and `Target_address` should be formatted by stream.* When some fields are not filled, please follow the padding logic used in our Header.py, `self.to_bytes()` function.
 
+#### CHECKSUM Calculation
+In this project, when calculating the CHECKSUM, you should set the `CHECKSUM` field to 0 firstly. Then you should follow the steps below to calculate your `CHECKSUM`.
+1. You should join all bytes data together (In the order of SYN, FIN, ACK, SEQ_num, ACK_num, LEN, RWND, CHECKSUM, Reserved, PAYLOAD.). 
+2. Didvide the result into 2-byte segments, with each 2-byte segment forming a 16-bit value. If there is a single byte of data at the end, add an extra byte of 0 to form a 2-byte segment.
+3. Sum all the 16-bit values to obtain a 32-bit value.
+4. Add the high 16 bits and low 16 bits of the 32-bit value to get a new 32-bit value. If the new 32-bit value exceeds 0xFFFF, add the high 16 bits and low 16 bits of the new value again.
+5. Take the 1's complement of the result obtained in the previous step to obtain the checksum value, and store it in the checksum field of the data.
+
 
 
 ### 1.2 Reliable Data Transfer
@@ -175,7 +183,7 @@ You will need to create a video of about 5-8 minutes containing the contents des
 # 3 Notes
 
 - Do not use any existing third-party libraries.
-- Data sent during testing will be similar to a long test.
+- The data sent during testing consists of long texts.
 - Provided code:
 
     1. *Header.py*: provides the data structure of the RDT packet header.
