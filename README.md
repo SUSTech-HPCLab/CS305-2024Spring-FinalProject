@@ -1,6 +1,6 @@
 # CS305-2024Spring-FinalProject: Reliable Data Transfer using UDP
 
-This project focuses on developing a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. Specifically, this project requires you to use UDP as the transport layer protocol and implement an RDT protocol at the application layer. The primary objective is to design and implement a protocol that can address the challenges and limitations of data transfers in an unreliable network environment. The project aims to create a robust and efficient communication protocol by leveraging UDP and exploring various mechanisms for reliable transmission. The protocol will be designed to mitigate issues such as packet loss, latency, data corruption, and congestion, which commonly impact network communication.
+This project focuses on developing a reliable data transfer (RDT) protocol using UDP as the unreliable protocol. Specifically, this project requires you to use UDP as the transport layer protocol and implement an RDT protocol at the application layer. The primary objective is to design and implement a protocol that can address the challenges and limitations of data transfers in an unreliable network environment. The project aims to create a robust and efficient communication protocol by leveraging UDP and exploring various mechanisms for reliable transmission. The protocol will be designed to mitigate issues such as packet loss, delay, data corruption, and congestion, which commonly impact network communication.
 
 **A comprehensive report about the implementation details, insights, and improvements is expected.**
 
@@ -27,7 +27,8 @@ Group: This is a group project. You must form a group of 2 or 3 students to comp
 +-------------------------+
 ``` -->
 
-The organization of the packet header can play a crucial role in facilitating reliable transmission. The packet header can be structured based on the diagram provided.    
+The organization of the packet header can play a crucial role in facilitating reliable transmission. The packet header can be structured based on the table provided.
+
 You should construct your RDT header as the template RDTHeader class, and it should contain the following data fields:
 
 |test_case|Source_address|Target_address|SYN|FIN|ACK|SEQ_num|ACK_num|LEN|RWND|CHECKSUM|Reserved|PAYLOAD|
@@ -78,7 +79,7 @@ Generally, a packet may be lost, corrupted, or delayed in an unreliable network 
 Sometimes, during the reception of a large amount of data, the receiver may experience timeouts for certain packets that are not delivered, and if the sender does not resend these packets, the receiver needs to send a request to the sender to specify retransmission. This feature should be implemented in both **`recv() & send()`**. -->
 
 #### 4 Data segmentation 
-We need to transmit large amounts of data that cannot be sent simultaneously. In such cases, you are supposed to implement a basic data chunking and sorting method that can divide a large dataset into multiple small CHUNKs that can be transmitted directly. Additionally, it should ensure that the receiver can reassemble these data chunks into the original large dataset upon receipt. This feature should be implemented in **`send()`** For example,
+We need to transmit large amounts of data that cannot be sent simultaneously. In such cases, you are supposed to implement a basic data chunking and sorting method to divide a large dataset into multiple small CHUNKs that can be transmitted directly. Additionally, it should ensure that the receiver can reassemble these data chunks into the original large dataset upon receipt. This feature should be implemented in **`send()`** For example,
 ```python
 target_addr = ("123.4.5.6", 12345)
 socket = TCPSocket(...)
@@ -92,7 +93,7 @@ socket.close()
 In the testing section, we have **a strict limit on the size of each chunk**, and you need to stick to that limit.
 
 #### 5 Pipeline manner
-Sequential transmission needs to wait for confirmation of the previous packet, which is inefficient. In such cases, data transmission must be done in a PIPELINE manner. You can transmit multiple packets simultaneously without waiting for confirmation of the previous packet. The number of in-flight packets is limited by the **RWND** and congestion window. In addition, you are also supposed to implement TCP fast retransmit when implementing the pipeline manner to ensure that anomalies such as packet loss in the pipeline can be detected and the lost packets can be retransmitted.
+Sequential transmission must wait for confirmation of the previous packet, which is inefficient. In such cases, data transmission must be done in a PIPELINE manner. You can transmit multiple packets simultaneously without waiting for confirmation of the previous packet. The number of in-flight packets is limited by the **RWND** and congestion window. In addition, you are also supposed to implement TCP **fast retransmission** when implementing the pipeline to ensure that anomalies such as packet loss in the pipeline can be detected and the lost packets can be retransmitted.
 
 
 
@@ -105,7 +106,7 @@ You are supposed to implement the 4-way handshake to close a reliable connection
 # 2 Testing & Grading
 ## Environment
 You must independently implement each function using only the standard libraries provided with Python; no external libraries are permitted. We will test your implementation in an environment running **Python 3.9.0**. Note that the use of the **socket library** is restricted solely to functions related to the **UDP** protocol.
- 
+
 
 ## 2.1 Test system
 When testing your RDTSocket, you should make our proxy server as your target server. Make sure that your **real target server address & port** have been stored in *Target_address* and the IP address and port of your host have been stored in *Source_address*. Please note that the content of the first 13 bytes (test_case, Source_address, Target_address) will still be preserved after passing through the proxy server.
@@ -122,7 +123,7 @@ To facilitate smoother testing, please adhere to the following guidelines by usi
 When the network environment is like the example figure above. Due to the header size totaling **42 bytes**, we have set the maximum data size that can be received once in the proxy server to **298 bytes.** Any excess beyond this size will be discarded. Therefore, please ensure that the size of each packet you send does not exceed 256 bytes, which means the length of *PAYLOAD* should not be larger than **256** bytes. For example, as shown in the figure above, 
 
 1. Please ensure that your Sender correctly saves the real destination address `("123.4.5.3", 12345)` and local address `("123.4.5.2", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.1", 12345)` during data transmission.
-2. Our proxy server will parse the first **13 bytes** of your data upon receipt to extract the *test_case, Source_address, and Target_address*. It will then simulate an unreliable network based on the *test_case* you set before forwarding your data to your receiver.
+2. Our proxy server will parse the first **13 bytes** of your data upon receipt to extract the *test_case, Source_address, and Target_address*. It will then simulate an unreliable network based on the `test_case` you set before forwarding your data to your receiver.
 3. Please ensure that your Receiver correctly fills in the real Sender address `("123.4.5.2", 12345)` and local address `("123.4.5.3", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.2", 12345)` during data transmission and keep listening to the local address `("123.4.5.3", 12345)`.
 
 <!-- ```python
@@ -158,13 +159,15 @@ The IP address and test port of the testing server will be released later.
 9. You must submit a report explaining how each function is implemented, including the performance analysis of RDT.（15 pts）
 
 **Bonus**: Any mechanism that improves the RDT transfer rate is permitted. If you have any ideas, please confirm with the instructors or SAs before you start. **(20 bonus pts)**
+
 We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and the RTT** (tentatively).
 We will set a baseline (to be announced later) for this metric. Any groups that perform higher than the baseline can get bonus points. We will rank your performance among all the groups in the class.
+You must test the performance during the final demonstration.
 
 <!-- ## 2.2 Presentation (30 pts)
-For the final presentation:
+For the final demonstration:
 1. Add a debug mode to the RDTSocket to print out information about the transmission process.
-2. Introduce how you implemented congestion control, flow control, and the pipeline.
+2. Introduce how you implemented all the mechanisms, such as congestion control, flow control, and the pipeline.
 3. Explain how you tested and evaluated the performance of your implementation.
 
 You will need to create a video of about 5-8 minutes containing the contents described above. -->
