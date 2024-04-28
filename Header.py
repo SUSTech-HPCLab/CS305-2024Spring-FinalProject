@@ -1,4 +1,4 @@
-class TCPHeader():
+class RDTHeader():
     def __init__(self, SYN: int = 0, FIN: int = 0, ACK: int = 0, SEQ_num: int = 0, ACK_num: int = 0, LEN: int = 0, CHECKSUM: int = 0, PAYLOAD = None, RWND: int = 0)  -> None:
         self.test_case = 0                      # Indicate the test case that will be used
         
