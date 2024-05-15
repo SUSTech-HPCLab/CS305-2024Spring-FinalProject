@@ -57,7 +57,7 @@ class RDTSocket():
         #############################################################################
         raise NotImplementedError()
     
-    def send(self, data=None, tcpheader=None):
+    def send(self, data=None, tcpheader=None, test_case=0):
         """
         RDT can use this function to send specified data to a target that has already 
         established a reliable connection. Please note that the corresponding CHECKSUM 
@@ -71,6 +71,7 @@ class RDTSocket():
             data:       The data that will be sent.
             tcpheader:  Message header.Include SYN, ACK, FIN, CHECKSUM, etc. Use this
                         attribute when needed.
+            test_case:  Indicate the test case will be used in this experiment
         """
         #############################################################################
         # TODO: YOUR CODE HERE                                                      #

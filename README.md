@@ -198,3 +198,26 @@ You will need to create a video of about 5-8 minutes containing the contents des
 
 # Contact
 If you have any questions about this project, please start a new issue.
+
+# Update log
+
+- 2024/05/15:
+    1. RDT.py, line 60: We add a new parameter `test_case` to the function `send()` to indicate which test case will be used.
+    2. Header.py, line 33: An logical error in function `to_bytes()`. It has been fixed.
+    3. We emphasize that during data transmission, please note that the **UDP socket** used at the lower level should send the header converted into a byte stream to the address of the proxy server, **not the actual destination address**. The real destination address is saved in the `Target_address` field of the header, which the proxy server will retrieve and then forward the data accordingly.
+    4. Address of proxy_server has been released.
+
+        |Name|Description|IP|Port|
+        |:-:|:-:|:-:|:-:|
+        |FromSender|The destinatiion that the sender should send the data to.|10.16.52.94|12345|
+        |FromReceiver|The destinatiion that the receiver should send the data to.|10.16.52.94|12347|
+        |ToSender|The destinatiion that the sender should receive the data from.|10.16.52.94|12346|
+        |ToReceiver|The destinatiion that the receiver should receive the data from.|10.16.52.94|12348|
+        |ProxyServerAddress|During the testing process, after completing the testing of each case, test_case.py will automatically send a cleanup request to the target.|10.16.52.94|12234|
+    5. We added two test script to this project to test your RDT socket. You could run `test_case.py` and `calculate_throughput.py` by
+        ```shell
+        python test_case.py                 # Test your RDTSocket on different test_case
+        python calculate_throughput.py      # Test your RDTSocket throughput locally.
+        ``` 
+        Please note that for test_case from 0~3, `test_case.py` will not illustrate your RDTSocket has passed the test or not. For test_case from 4~6, `test_case.py` could show that your RDTSocket has passed the test or not.
+    6. If you have any questions, you could conact SA [Rongyuan Tan](mailto:12231141@mail.sustech.edu.cn) by email or wechat: jzxycsjzy or QQ: 627807228.

@@ -30,7 +30,7 @@ class RDTHeader():
         
         SYN = self.SYN.to_bytes(1, 'big')
         FIN = self.FIN.to_bytes(1, 'big')
-        ACK = self.FIN.to_bytes(1, 'big')
+        ACK = self.ACK.to_bytes(1, 'big')
         SEQ_num = self.SEQ_num.to_bytes(4, 'big')
         ACK_num = self.ACK_num.to_bytes(4, 'big')
         LEN = self.LEN.to_bytes(4, 'big')
