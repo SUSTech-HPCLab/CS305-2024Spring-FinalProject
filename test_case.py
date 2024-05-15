@@ -15,10 +15,6 @@ receiver_address = ("10.16.56.14", 12349)       # Your receiver address
 
 num_test_case = 7
 
-def get_result():
-    # 用于从proxy 中获取case的结果
-    pass
-
 def test_case():
     sender_sock = None
     reciever_sock = None
