@@ -205,7 +205,7 @@ If you have any questions about this project, please start a new issue.
     1. RDT.py, line 60: We add a new parameter `test_case` to the function `send()` to indicate which test case will be used.
     2. Header.py, line 33: An logical error in function `to_bytes()`. It has been fixed.
     3. We emphasize that during data transmission, please note that the **UDP socket** used at the lower level should send the header converted into a byte stream to the address of the proxy server, **not the actual destination address**. The real destination address is saved in the `Target_address` field of the header, which the proxy server will retrieve and then forward the data accordingly. Detailed about how to modify these two test script, please refer to the comments in thiese two files.
-    4. Address of proxy_server has been released.
+    4. Address of proxy_server has been released. **Please note that you have to connect to the SUSTech network.**
 
         |Name|Description|IP|Port|
         |:-:|:-:|:-:|:-:|
