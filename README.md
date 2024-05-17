@@ -219,5 +219,5 @@ If you have any questions about this project, please start a new issue.
         python test_case.py                 # Test your RDTSocket on different test_case
         python calculate_throughput.py      # Test your RDTSocket throughput locally.
         ``` 
-        Please note that for test_case from 0~3, `test_case.py` will not illustrate your RDTSocket has passed the test or not. For test_case from 4~6, `test_case.py` could show that your RDTSocket has passed the test or not. Otherwise, you could download the test file `original.txt` from [test_file](https://send.cra.moe/file/tvkyHgjI61eVA4cl/8fR7tR7VQdBEywpR/original.txt)
+        Please note that for test_case from 0-3, `test_case.py` will not illustrate your RDTSocket has passed the test or not. For test_case from 4-6, `test_case.py` could show that your RDTSocket has passed the test or not. Otherwise, you could download the test file `original.txt` from [test_file](https://send.cra.moe/file/tvkyHgjI61eVA4cl/8fR7tR7VQdBEywpR/original.txt)
     6. If you have any questions, you could conact SA [Rongyuan Tan](mailto:12231141@mail.sustech.edu.cn) by email or wechat: jzxycsjzy or QQ: 627807228.
