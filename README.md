@@ -70,10 +70,11 @@ server_socket = socket.accept()
 ```
 ```python
 # As a Client
+server_addr = ("123.4.5.6", 12344)
 target_addr = ("123.4.5.7", 12345)
 socket = RDTSocket(...)
-socket.bind(target_addr)
-socket.connect()
+socket.bind(server_addr)
+socket.connect(target_addr)
 ```
 
 #### 2 Packet verification
