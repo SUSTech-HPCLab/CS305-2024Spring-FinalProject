@@ -168,7 +168,7 @@ The IP address and test port of the testing server will be released later.
 
 **Bonus**: You can implement additional mechanisms to improve the RDT performance. If you have any ideas, please confirm with the instructors or SAs before you start. **(20 bonus pts)**
 
-We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and RTT of your socket/RTT of UDP** (tentatively). 
+We will give the bonus points based on the performance of your implemented sockets. The metrics to evaluate the performance of your RDTSocket are **throughput of your socket/throughput of python UDP and lantency of your socket/lantency of UDP** (tentatively). 
 We will set a baseline (to be announced later) for these metrics. Only the groups that perform better than the baseline can get bonus points. We will rank your performance among all the groups in the class.
 You must show the performance during the final demonstration.
 
@@ -214,10 +214,14 @@ If you have any questions about this project, please start a new issue.
         |ToSender|The destinatiion that the sender should receive the data from.|10.16.52.94|12346|
         |ToReceiver|The destinatiion that the receiver should receive the data from.|10.16.52.94|12348|
         |ProxyServerAddress|During the testing process, after completing the testing of each case, test_case.py will automatically send a cleanup request to the target.|10.16.52.94|12234|
-    5. We added two test script to this project to test your RDT socket. You could run `test_case.py` and `calculate_throughput.py` by
+    5. Details of Bonus
+        - In throughput test, you will send a file using RDT and record its spend time. Meanwhile, we will use UDP to send the same size file and record the time. You need to compare the time of RDT and UDP. In our baseline, the throughput of RDT is **40%** of UDP. During the test, you should set **the same chunk size** for UDP and RDT.
+        - In lantency test, you will test the lantency of sending a data after establishing an RDT connection. The data is the timestamp of the current system, which you can collect using the time.time() function. Further details are presented in the file `calculate_latency.py`. In our baseline, the lantency of RDT is **120%** of UDP.
+    6. We added three test script to this project to test your RDT socket. You could run `test_case.py` , `calculate_throughput.py` and `calculate_latency.py` by
         ```shell
         python test_case.py                 # Test your RDTSocket on different test_case
         python calculate_throughput.py      # Test your RDTSocket throughput locally.
+        python calculate_latency.py         # Test your RDTSocket lantency locally.
         ``` 
         Please note that for test_case from 0-3, `test_case.py` will not illustrate your RDTSocket has passed the test or not. For test_case from 4-6, `test_case.py` could show that your RDTSocket has passed the test or not. Otherwise, you could download the test file `original.txt` from [test_file](https://send.cra.moe/file/tvkyHgjI61eVA4cl/8fR7tR7VQdBEywpR/original.txt)
-    6. If you have any questions, you could conact SA [Rongyuan Tan](mailto:12231141@mail.sustech.edu.cn) by email or wechat: jzxycsjzy or QQ: 627807228.
+    7. If you have any questions, you could conact SA [Rongyuan Tan](mailto:12231141@mail.sustech.edu.cn) by email or wechat: jzxycsjzy or QQ: 627807228.
