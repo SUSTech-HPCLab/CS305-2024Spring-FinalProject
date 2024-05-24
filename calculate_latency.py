@@ -4,7 +4,6 @@ import time
 from multiprocessing import Process
 from RDT import RDTSocket as RDTSocket
 from  Header import RDTHeader
-import multiprocessing
 
 Speed_RDT = 0
 Speed_UDP = 0
@@ -67,7 +66,7 @@ def UDP_start_test(port=12349):
 
 def RDT_start_test(): 
     sender = Process(target=RDT_send, args=(source_address, target_address))
-    receiver = Process(target=RDT_receive, args=(target_address))
+    receiver = Process(target=RDT_receive, args=(target_address,))
 
     receiver.start()
     time.sleep(5)
@@ -133,7 +132,6 @@ def test_latency():
     # UDP
     try:
         UDP_start_test()
-        pass
     except Exception as e:
         print(e)
 

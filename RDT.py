@@ -30,7 +30,7 @@ class RDTSocket():
         #############################################################################
         raise NotImplementedError()
     
-    def accept(self) -> RDTSocket: # type: ignore
+    def accept(self): # type: ignore
         """
         When using this SOCKET to create an RDT SERVER, it should accept the connection
         from a CLIENT. After that, an RDT connection should be established.
