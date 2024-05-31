@@ -165,7 +165,7 @@ The IP address and test port of the testing server will be released later.
 <!-- 6. We will prepare different test cases to test the performance of your RDTSocket. (total 25 pts) -->
 8. You should be able to **clearly** explain your code to the examinators to demonstrate that your related feature has been implemented.
 
-9. You must submit a report explaining how each function is implemented, including the performance analysis of RDT.（15 pts）
+9. You must submit a report explaining how each function is implemented, including the performance analysis of RDT.（10 pts）
 
 **Bonus**: You can implement additional mechanisms to improve the RDT performance. If you have any ideas, please confirm with the instructors or SAs before you start. **(20 bonus pts)**
 
