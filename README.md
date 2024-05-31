@@ -215,14 +215,52 @@ If you have any questions about this project, please start a new issue.
         |ToSender|The destinatiion that the sender should receive the data from.|10.16.52.94|12346|
         |ToReceiver|The destinatiion that the receiver should receive the data from.|10.16.52.94|12348|
         |ProxyServerAddress|During the testing process, after completing the testing of each case, test_case.py will automatically send a cleanup request to the target.|10.16.52.94|12234|
+
     5. Details of Bonus
-        - In throughput test, you will send a file using RDT and record its spend time. Meanwhile, we will use UDP to send the same size file and record the time. You need to compare the time of RDT and UDP. In our baseline, the throughput of RDT is **40%** of UDP. During the test, you should set **the same chunk size** for UDP and RDT.
-        - In lantency test, you will test the lantency of sending a data after establishing an RDT connection. The data is the timestamp of the current system, which you can collect using the time.time() function. Further details are presented in the file `calculate_latency.py`. In our baseline, the lantency of RDT is **120%** of UDP.
+        - In throughput test, you will send a file using RDT and record its spend time. The file will be sent in multiple chunks. Meanwhile, you will use UDP to send the same size file and record the time. You need to compare the time of RDT and UDP. **In our baseline, the throughput of RDT is **40%** of UDP. During the test, you should set the same chunk size for UDP and RDT.**
+        - In the latency test, you will measure the latency of sending data after establishing an RDT connection. Latency is defined as the delay between the sender sending data and the receiver successfully receiving this data and parsing it after establishing the connection. The data used is the current system timestamp, which you can collect using the `time.time()` function. Further details are presented in the file `calculate_latency.py`. **In our baseline, the latency of RDT is 120% of that of UDP.**
+
     6. We added three test script to this project to test your RDT socket. You could run `test_case.py` , `calculate_throughput.py` and `calculate_latency.py` by
         ```shell
         python test_case.py                 # Test your RDTSocket on different test_case
         python calculate_throughput.py      # Test your RDTSocket throughput locally.
         python calculate_latency.py         # Test your RDTSocket lantency locally.
         ``` 
-        Please note that for test_case from 0-3, `test_case.py` will not illustrate your RDTSocket has passed the test or not. For test_case from 4-6, `test_case.py` could show that your RDTSocket has passed the test or not. Otherwise, you could download the test file `original.txt` from [test_file](https://send.cra.moe/file/tvkyHgjI61eVA4cl/8fR7tR7VQdBEywpR/original.txt)
+
     7. If you have any questions, you could conact SA [Rongyuan Tan](mailto:12231141@mail.sustech.edu.cn) by email or wechat: jzxycsjzy or QQ: 627807228.
+- 2024/05/31:
+
+    1. In the bonus part, **the size of the test_file is 100MB**, and you can generate this test_file by random generation. There is no need to download our data, and you just need to compare whether the files are the same in the end. Meanwhile, in test_case.py, **the size of the test_file is 100KB** and you can generate this test_file by random generation.
+
+    2. **`test_case.py`, `calculate_throughput.py` and  `calculate_latency.py` all require you to make some changes based on your code implementation, please see the corresponding file for details.**
+
+    3. We observed that some connections were taking up too many threads on the proxy server due to some incorrect implementation, which caused other connections to not work properly. We have released the source code of the proxy server and provided two simple test cases, please pass these two cases locally before connecting to our server.
+    For example:
+    ```python
+    # For proxy
+
+    proxy_server_address = ('10.16.52.94', 12234)   
+    fromSenderAddr = ('10.16.52.94', 12345)         
+    toReceiverAddr = ('10.16.52.94', 12346)         
+    fromReceiverAddr = ('10.16.52.94', 12347)      
+    toSenderAddr = ('10.16.52.94', 12348)           
+
+    ```
+    ```python
+    # For local 
+    proxy_server_address = ('127.0.0.1', 12234)
+    fromSenderAddr = ('127.0.0.1', 12345)
+    toReceiverAddr = ('127.0.0.1', 12346)
+    fromReceiverAddr = ('127.0.0.1', 12347)
+    toSenderAddr = ('127.0.0.1', 12348)
+
+    sender_address = ("127.0.0.1", 12244)
+    receiver_address = ("127.0.0.1", 12249)
+    resultAddr = ("127.0.0.1", 12230)
+    ```
+
+    4. **In `test_case.py`, if the packet you're sending is for three handshakes and four-way termination, set the RDTHeader's test_case field as 20, otherwise set it as the current test case.**
+
+    5. We have made some changes to `test_case.py` to prevent timeouts.
+
+
