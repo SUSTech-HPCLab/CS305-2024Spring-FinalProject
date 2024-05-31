@@ -63,8 +63,8 @@ class RDTHeader():
         self.SEQ_num = int.from_bytes(data[16:20], 'big')
         self.ACK_num = int.from_bytes(data[20:24], 'big')
         self.LEN = int.from_bytes(data[24:28], 'big')
-        self.CHECKSUM = int.from_bytes(data[28:30], 'big')
-        self.RWND = int.from_bytes(data[30:34], 'big')
+        self.RWND = int.from_bytes(data[28:32], 'big')
+        self.CHECKSUM = int.from_bytes(data[32:34], 'big')
         self.Reserved = int.from_bytes(data[34:42], 'big')
         
         self.PAYLOAD = data[42:].decode()
