@@ -20,7 +20,7 @@ class RDTSocket():
         and listening for connections. address is the address bound to the socket on 
         the other end of the connection.
 
-        This function should be blocking. 
+     
         
         params: 
             address:    Target IP address and its port
@@ -38,7 +38,11 @@ class RDTSocket():
         establish multiple socket connections. Messages from different sockets should 
         be isolated from each other, requiring you to multiplex the data received at 
         the underlying UDP.
+
+        This function should be blocking. 
+
         """
+
         #############################################################################
         # TODO: YOUR CODE HERE                                                      #
         #############################################################################
