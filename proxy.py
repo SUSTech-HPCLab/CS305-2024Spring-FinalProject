@@ -1,10 +1,7 @@
 
-import string
 import socket
 import random
-import copy
 import time
-from Header import TCPHeader
 import threading
 import concurrent.futures
 

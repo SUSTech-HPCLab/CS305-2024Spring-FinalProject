@@ -2,7 +2,6 @@ import socket
 import time
 from RDT import RDTSocket
 from multiprocessing import Process
-from Header import RDTHeader
 import signal
 
 # connect proxy server 
