@@ -1,7 +1,10 @@
 
+import string
 import socket
 import random
+import copy
 import time
+from Header import RDTHeader
 import threading
 import concurrent.futures
 
@@ -30,7 +33,7 @@ def case_test(pkt, outSock: socket.socket):
     global num_test
 
     try:
-        header = TCPHeader().from_bytes(pkt)
+        header = RDTHeader().from_bytes(pkt)
         addr = header.tgt
         test_case = header.test_case
 
