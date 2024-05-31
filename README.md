@@ -160,7 +160,7 @@ The IP address and test port of the testing server will be released later.
 4. Complete data segmentation. (5 pts)
 5. Your RDTSocket could be used as a client to send multiple short messages to the server built by your RDTSocket. (10 pts)
 6. Your RDTSocket could be used as a server to receive a large file from a client built by your RDTSocket. The file should be separated into multiple CHUNKs and will be sent in a disordered sequence, with some packets being lost. Your RDTSocket should receive and buffer all this data and recover it to the original file based on the sequence number of each packet. If the RDTSocket detects lost packets, it should be able to detect missing packets and receive them from the retransmitted data sent by the client. (20 pts)
-7. Your RDTSocket could be used as a client to send a large file to the server built by our RDTSocket. This file should be separated into multiple CHUNKs and sent in a PIPELINE way. During testing, we will delay data packets to simulate congestion situations. **Please ensure your RDTSocket can maintain the sizes of the congestion control window and flow control window** to control the sending and receiving speed of data and stop sending data when the server is congested. Resume sending data only when notified by the server that it can receive data again. Sending more than 30% of data beyond the buffer will be considered a failure to complete the flow control function. (30 pts)
+7. Your RDTSocket could be used as a client to send a large file to the server built by our RDTSocket. This file should be separated into multiple CHUNKs and sent in a PIPELINE way. During testing, we will delay data packets to simulate congestion situations. **Please ensure your RDTSocket can maintain the sizes of the congestion control window and flow control window** to control the sending and receiving speed of data and stop sending data when the server is congested. Resume sending data only when notified by the server that it can receive data again. Sending more than 30% of data beyond the buffer will be considered a failure to complete the flow control function. (35 pts)
 
 <!-- 6. We will prepare different test cases to test the performance of your RDTSocket. (total 25 pts) -->
 8. You should be able to **clearly** explain your code to the examinators to demonstrate that your related feature has been implemented.
@@ -261,6 +261,6 @@ If you have any questions about this project, please start a new issue.
 
     4. **In `test_case.py`, if the packet you're sending is for three handshakes and four-way termination, set the RDTHeader's test_case field as 20, otherwise set it as the current test case.**
 
-    5. We have made some changes to `test_case.py` to prevent timeouts.
+    5. We have made some changes to `test_case.py` to prevent timeouts and fix some bugs of `Header.py`.
 
 

@@ -13,6 +13,8 @@ import signal
 # fromReceiverAddr = ('10.16.52.94', 12347)       # FromReceiver
 # toSenderAddr = ('10.16.52.94', 12348)           # ToReceiver
 
+# resultAddr = ('10.16.52.94', 12230)
+
 # #TODO change the adress to your address
 # sender_address = ("10.16.56.14", 12344)         # Your sender address
 # receiver_address = ("10.16.56.14", 12349)       # Your receiver address
