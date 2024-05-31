@@ -190,7 +190,6 @@ if __name__ == '__main__':
     fromReceiverAddr = ('127.0.0.1', 12347)
     toSenderAddr = ('127.0.0.1', 12348)
 
-    resultAddr = ('127.0.0.1', 12334)
     fromSenderSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     fromSenderSock.bind(fromSenderAddr)
     fromReceiverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
