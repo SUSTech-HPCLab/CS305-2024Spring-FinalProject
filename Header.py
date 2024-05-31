@@ -71,4 +71,20 @@ class RDTHeader():
 
         return self
 
+    def assign_address(self, Source_address: tuple, Target_address: tuple):
+        source_ip = Source_address[0].split('.')
+        target_ip = Target_address[0].split('.')
+        for i in range(4):
+            self.Source_address[i] = int(source_ip[i])
+            self.Target_address[i] = int(target_ip[i])
+        self.Source_address[4] = Source_address[1]
+        self.Target_address[4] = Target_address[1]
+    
+    @property
+    def src(self):
+        return (f"{self.Source_address[0]}.{self.Source_address[1]}.{self.Source_address[2]}.{self.Source_address[3]}", self.Source_address[4])
+    
+    @property
+    def tgt(self):
+        return (f"{self.Target_address[0]}.{self.Target_address[1]}.{self.Target_address[2]}.{self.Target_address[3]}", self.Target_address[4])
 
