@@ -133,7 +133,7 @@ When the network environment is like the example figure above. Due to the header
 
 1. Please ensure that your Sender correctly saves the real destination address `("123.4.5.3", 12345)` and local address `("123.4.5.2", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.1", 12345)` during data transmission.
 2. Our proxy server will parse the first **13 bytes** of your data upon receipt to extract the *test_case, Source_address, and Target_address*. It will then simulate an unreliable network based on the `test_case` you set before forwarding your data to your receiver.
-3. Please ensure that your Receiver correctly fills in the real Sender address `("123.4.5.2", 12345)` and local address `("123.4.5.3", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.2", 12345)` during data transmission and keep listening to the local address `("123.4.5.3", 12345)`.
+3. Please ensure that your Receiver correctly fills in the real Sender address `("123.4.5.2", 12345)` and local address `("123.4.5.3", 12345)` in the header when sending data. The socket should be configured to send data to the address `("123.4.5.1", 12345)` during data transmission and keep listening to the local address `("123.4.5.3", 12345)`.
 
 <!-- ```python
 target_addr = ("123.4.5.6", 12345)
